@@ -5,6 +5,7 @@ const jwt=require("jsonwebtoken")
 const bcrypt =require("bcryptjs")
 const Token =require("../models/tokenModel")
 const crypto = require('crypto');
+const sendEmail = require("../utils/sendEmail")
 //generate a token
 
 const generateToken =(id)=>{
@@ -278,11 +279,39 @@ await new Token({
 
 //construct reset url
 
+const resetUrl = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`
+
+// reset email
+
+const message = `
+<h2> Hello ${user.name}</h2>
+
+<p> Please use the url below to reset your password</p>
 
 
+<p> Reset link is valid for only 30 minutes</p>
 
- res.send("Forgot password")
 
+<a href =${resetUrl} clickTracking = off >${resetUrl}</a>
+
+
+<p>Regards...</p>
+<p>mashia-ES</p>
+
+`;
+
+const subject ="Password reset Request";
+const send_to =user.email;
+const sent_from =process.env.EMAIL_USER;
+
+
+try {
+  await sendEmail(subject,message,send_to,sent_from)
+  res.status(200).json({success:true,message:"Reset Email Sent"})
+} catch (error) {
+  res.status(500)
+  throw new Error("Email not sent, Please try again")
+}
 })
 
 module.exports={
