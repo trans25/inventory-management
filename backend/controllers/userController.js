@@ -6,7 +6,6 @@ const bcrypt =require("bcryptjs")
 const Token =require("../models/tokenModel")
 const crypto = require('crypto');
 const sendEmail = require("../utils/sendEmail")
-
 //generate a token
 
 const generateToken =(id)=>{
@@ -269,8 +268,8 @@ const forgotPassword=asyncHandler(async(req,res)=>{
 
  // create reset token
  let resetToken =crypto.randomBytes(32).toString("hex") + user._id
-console.log(resetToken);
-//hash token ,then compare to the one in database
+
+//hash token before saving to db
 const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
 console.log(hashedToken)
 
@@ -324,27 +323,7 @@ try {
 //reset password
 
 const resetPassword=asyncHandler(async(req,res)=>{
-  const {password}=req.body;
-  const {resetToken}=req.params
-
-  
-//hash token ,then compare to the one in database
-const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
-
-//find token in db
-const userToken =await Token.findOne({
-  token:hashedToken,
-  expiresAt:{$gt: Date.now()}
-})
-if(!userToken){
-  res.status(404)
-  throw new Error("Invalid or Expired Token")
-}
-//find user
-const user =await User.findOne({_id:userToken.userId})
-user.password = password
-await user.save()
-res.status(200).json({message:"Password Reset successful, Please Login"})
+  res.send("reset password")
 })
 
 module.exports={
