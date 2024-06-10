@@ -9,6 +9,7 @@ const {loginStatus}=require("../controllers/userController")
 const {updateUser}=require("../controllers/userController")
 const {changePassword}=require("../controllers/userController")
 const {forgotPassword}=require("../controllers/userController")
+const {resetPassword}=require("../controllers/userController")
 
 
 
@@ -31,6 +32,10 @@ router.patch("/updateUser",protect,updateUser);
 //change password
 router.patch("/changePassword",protect,changePassword);
 
-//reset password
+//forgot password
 router.post("/forgotPassword",forgotPassword);
+
+//reset password
+router.put("/resetPassword/:resetToken",resetPassword);
+
 module.exports= router

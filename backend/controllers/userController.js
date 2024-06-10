@@ -320,6 +320,12 @@ try {
 }
 })
 
+//reset password
+
+const resetPassword=asyncHandler(async(req,res)=>{
+  res.send("reset password")
+})
+
 module.exports={
     registerUser,
     loginUser,
@@ -328,5 +334,6 @@ module.exports={
     loginStatus,
     updateUser,
     changePassword,
-    forgotPassword
+    forgotPassword,
+    resetPassword
 }
