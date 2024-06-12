@@ -144,7 +144,7 @@
           }
           li {
             padding: 5px 0;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid white;
             a {
               display: block;
             }
@@ -156,7 +156,7 @@
           .cart {
             display: block;
             padding: 5px 0;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid white;
             a {
               position: relative;
               p {

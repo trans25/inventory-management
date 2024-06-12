@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './header.css'
 import {Link, NavLink} from 'react-router-dom'
-
+import { FaCartArrowDown } from "react-icons/fa";
 const logo =(<div className="logo">
     <Link to="/">
     <h2 className='h2'>
-        Shop<span className='span'>Ecomm</span>
+        Founder`s<span className='span'>Box</span>
     </h2>
     </Link>
 
@@ -16,6 +16,14 @@ const activeLink = ({isActive}) => (
   );
   
 const Header = () => {
+    const cart =(
+        <span className='cart'>
+<Link to='/cart'>Cart
+<FaCartArrowDown size={20}/>
+<p></p>
+</Link>
+        </span>
+    )
   return (
     <header >
       
@@ -30,7 +38,7 @@ const Header = () => {
         </ul>
         <div className={styles['header-right']}>
 
-            <span className={styles.links}>
+            <span >
                 <NavLink to={'login'} className={activeLink}>
                 Login</NavLink>
 
@@ -42,7 +50,7 @@ const Header = () => {
 
 
             </span>
-
+{cart}
         </div>
        </nav>
       </div>
