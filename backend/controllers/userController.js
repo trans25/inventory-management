@@ -58,15 +58,16 @@ res.cookie("token",token,{
 })
 
 if(user){
-    const {_id,name,email,image,phone,bio}=user
+    const {_id,name,email,image,phone,bio,role}=user
     res.status(201).json({
-      
+
       _id,
       name,
       email,
       image,
       phone,
       bio,
+      role,
       token
     })
 }
@@ -110,17 +111,18 @@ res.cookie("token",token,{
 })
 
 if(user && passwordIsCorrect){
-    const {_id,name,email,image,phone,bio}=user
+    const {_id,name,email,image,phone,bio,role}=user
     res.status(200).json({
-      
+
       _id,
       name,
       email,
       image,
       phone,
       bio,
+      role,
       token
-      
+
     })
 }
 else{
@@ -149,16 +151,17 @@ const getUser =  asyncHandler(async (req,res)=>{
   
 const user = await User.findById(req.user._id)
 if(user){
-    const {_id,name,email,image,phone,bio}=user
+    const {_id,name,email,image,phone,bio,role}=user
     res.status(201).json({
-      
+
       _id,
       name,
       email,
       image,
       phone,
       bio,
-      
+      role,
+
     })
 }
 else{
@@ -326,6 +329,37 @@ const resetPassword=asyncHandler(async(req,res)=>{
   res.send("reset password")
 })
 
+//get all users (admin only)
+const getUsers=asyncHandler(async(req,res)=>{
+  const users=await User.find().select("-password").sort("-createdAt")
+  res.status(200).json(users)
+})
+
+//update a user's role (admin only)
+const updateUserRole=asyncHandler(async(req,res)=>{
+  const {role}=req.body
+
+  if(!["admin","manager","shop"].includes(role)){
+    res.status(400)
+    throw new Error("Invalid role")
+  }
+
+  const user=await User.findById(req.params.id)
+  if(!user){
+    res.status(404)
+    throw new Error("User not found")
+  }
+
+  user.role=role
+  const updatedUser=await user.save()
+  res.status(200).json({
+    _id:updatedUser._id,
+    name:updatedUser.name,
+    email:updatedUser.email,
+    role:updatedUser.role
+  })
+})
+
 module.exports={
     registerUser,
     loginUser,
@@ -335,5 +369,7 @@ module.exports={
     updateUser,
     changePassword,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    getUsers,
+    updateUserRole
 }

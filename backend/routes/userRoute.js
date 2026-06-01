@@ -10,6 +10,9 @@ const {updateUser}=require("../controllers/userController")
 const {changePassword}=require("../controllers/userController")
 const {forgotPassword}=require("../controllers/userController")
 const {resetPassword}=require("../controllers/userController")
+const {getUsers}=require("../controllers/userController")
+const {updateUserRole}=require("../controllers/userController")
+const authorize=require("../middleware/roleMiddleware")
 
 
 
@@ -37,5 +40,9 @@ router.post("/forgotPassword",forgotPassword);
 
 //reset password
 router.put("/resetPassword/:resetToken",resetPassword);
+
+//admin: manage users
+router.get("/",protect,authorize("admin"),getUsers);
+router.patch("/:id/role",protect,authorize("admin"),updateUserRole);
 
 module.exports= router

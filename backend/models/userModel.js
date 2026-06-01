@@ -23,6 +23,12 @@ const userSchema = mongoose.Schema({
        // maxLength: [23, "Password must not be more than 23 characters"]
     }
     ,
+    role: {
+        type: String,
+        required: true,
+        enum: ["admin", "manager", "shop"],
+        default: "shop"
+    },
     image:{
         type:String,
         required:[true,"Please add an image"],
